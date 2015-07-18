@@ -16,21 +16,20 @@ public:
     int at(int x, int y) const;
     bool fillValues(int values[][SIZE_SIDE_BOARD]);
 
-    bool up(int pos);
-    bool canUp(int pos) const;
-    bool canUp(int row, int col) const;
+    bool up();
+    bool canUp() const;
 
-    bool down(int pos);
-    bool canDown(int pos);
-    bool canDown(int row, int col);
+    bool down();
+    bool canDown();
 
-    bool left(int pos);
-    bool canleft(int pos);
-    bool canleft(int row, int col);
+    bool left();
+    bool canleft();
 
-    bool right(int pos);
-    bool canright(int pos);
-    bool canright(int row, int col);
+    bool right();
+    bool canright();
+
+    void setEmptyCell(Cell *cell);
+    Cell *getEmptyCell();
 
 private:
     void calculeRowCol(int pos, int *row, int *col) const;
@@ -40,7 +39,7 @@ private:
     const Cell *getCell(int row, int col) const;
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
-    Cell *emptyCell;
+    Cell *m_emptyCell;
 	   
 };
 

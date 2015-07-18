@@ -1,7 +1,7 @@
 #include "board.h"
 #include "relationshipbuilder.h"
 
-Board::Board() : emptyCell(0) {
+Board::Board() : m_emptyCell(0) {
     fillCells();
     buildRelationshipCells();
 }
@@ -26,7 +26,7 @@ int Board::at(int x, int y) const
 
 bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
 {
-    emptyCell = 0;
+    m_emptyCell = 0;
     for (int i = 1;i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD;++i) {
         int row;
         int col;
@@ -36,91 +36,64 @@ bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
         Cell *cell = &m_arrayBoard[row][col];
 
         if (value == 0 ) {
-            if (emptyCell != 0)
+            if (m_emptyCell != 0)
                 return false;
-            emptyCell = cell;
+            m_emptyCell = cell;
         }
-
         cell->setValue(value);
     }
 
-    return emptyCell != 0;
+    return m_emptyCell != 0;
 }
 
-bool Board::up(int pos)
+bool Board::up()
 {
-    Cell *cell;
-
-    cell = const_cast<Cell *>(getCell(pos));
-
-    return cell->up();
+    return m_emptyCell->up();
 }
 
-bool Board::canUp(int pos) const
+bool Board::canUp() const
 {
-    return getCell(pos)->canUp();
+    return m_emptyCell;
 }
 
-bool Board::canUp(int row, int col) const
+bool Board::down()
 {
-    return getCell(row, col)->canUp();
+    return m_emptyCell->down();
 }
 
-bool Board::down(int pos)
+bool Board::canDown()
 {
-    Cell *cell;
-
-    cell = const_cast<Cell *>(getCell(pos));
-
-    return cell->down();
+    return m_emptyCell->canDown();
 }
 
-bool Board::canDown(int pos)
+bool Board::left()
 {
-    return getCell(pos)->canDown();
+    return m_emptyCell->left();
 }
 
-bool Board::canDown(int row, int col)
+bool Board::canleft()
 {
-    return getCell(row, col)->canDown();
+    return m_emptyCell->canLeft();
 }
 
-bool Board::left(int pos)
+bool Board::right()
 {
-    Cell *cell;
-
-    cell = const_cast<Cell *>(getCell(pos));
-
-    return cell->left();
+    return m_emptyCell->right();
 }
 
-bool Board::canleft(int pos)
+bool Board::canright()
 {
-    return getCell(pos)->canLeft();
+    return m_emptyCell->canRight();
 }
 
-bool Board::canleft(int row, int col)
+void Board::setEmptyCell(Cell *cell)
 {
-    return getCell(row, col)->canLeft();
+    m_emptyCell = cell;
 }
 
-bool Board::right(int pos)
+Cell *Board::getEmptyCell()
 {
-    Cell *cell;
-
-    cell = const_cast<Cell *>(getCell(pos));
-
-    return cell->right();
-}
-
-bool Board::canright(int pos)
-{
-    return getCell(pos)->canRight();
-}
-
-bool Board::canright(int row, int col)
-{
-    return getCell(row, col)->canRight();
+    return m_emptyCell;
 }
 
 void Board::calculeRowCol(int pos, int *row, int *col) const

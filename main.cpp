@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <string>
 #include <board.h>
+#include <stdio.h>
 
 void print(Board b);
 void test(int values[][4]);
@@ -20,15 +21,32 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-
+    std::cout << "\n";
     print(b);
-
-//    while (true) {
+    while (true) {
+        int c = getchar();
+        if (c == 10)
+            continue;
+        std::cout << "char " << c << "\n";
+        if (c == 0) {
+            std::cout << "saindo " << "\n";
+            break;
+        } else if (c == 52) {
+            b.left();
+        } else if (c == 54) {
+            b.right();
+        } else if (c == 56) {
+            b.up();
+        } else if (c == 50) {
+            b.down();
+        } else {
+            std::cout << "tecla invalids " << "\n";
+            continue;
+        }
         std::cout << "\n";
-//        int c = getchar();
-//        if (c == )
-        b.up(16);
         print(b);
+    }
+
 
 
 //    }

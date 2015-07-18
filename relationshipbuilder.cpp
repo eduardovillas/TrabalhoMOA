@@ -19,6 +19,7 @@ void RelationShipBuilder::buildRelation(Cell *currentCell)
     buildUpRelationShip(currentCell, row, col);
     buildDownRelationShip(currentCell, row, col);
     buildLeftRelationShip(currentCell, row, col);
+    buildRightRelationShip(currentCell, row, col);
 
 }
 

@@ -87,7 +87,7 @@ void Cell::swapCells(Cell *thisCell, Cell *m_destineCell)
 {
     thisCell->m_value = m_destineCell->m_value;
     m_destineCell->m_value = 0;
-
+    m_board->setEmptyCell(m_destineCell);
 }
 
 bool Cell::up()
