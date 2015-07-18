@@ -1,7 +1,8 @@
 #include "cell.h"
+#include "board.h"
 
-Cell::Cell(int row, int col, int value) :
-    m_row(row), m_col(col), m_value(value)
+Cell::Cell(int row, int col, int value, Board *board) :
+    m_row(row), m_col(col), m_value(value), m_board(board)
 {
     initAdjacentCells();
 }
@@ -51,6 +52,7 @@ void Cell::swap(const Cell &other)
     m_dowCell = other.m_dowCell;
     m_leftCell = other.m_leftCell;
     m_rightCell = other.m_rightCell;
+    m_board = other.m_board;
 }
 
 int Cell::getRow()

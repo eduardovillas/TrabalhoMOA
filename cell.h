@@ -6,7 +6,7 @@ class Board;
 class Cell
 {
 public:
-    Cell(int row, int col, int value = 0);
+    Cell(int row, int col, int value = 0, Board *board = 0);
     Cell(const Cell &other);
     Cell();
     virtual ~Cell();
@@ -57,7 +57,7 @@ private:
     Cell *m_dowCell;
     Cell *m_leftCell;
     Cell *m_rightCell;
-    Board *board;
+    Board *m_board;
 
 };
 

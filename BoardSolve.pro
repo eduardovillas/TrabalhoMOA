@@ -17,8 +17,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     board.cpp \
-    point.cpp
+    cell.cpp \
+    relationshipbuilder.cpp
 
 HEADERS += \
     board.h \
-    point.h
+    cell.h \
+    moa_global.h \
+    relationshipbuilder.h
