@@ -38,6 +38,8 @@ public:
     void decrementCellsInPosition();
 
     bool winGame();
+    void incrementTries();
+    unsigned long long int getTries();
 
 private:
     void buildRelationshipCells();
@@ -48,7 +50,7 @@ private:
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
     int m_cellsInPosition;
-	   
+    unsigned long long int m_tries;
 };
 
 #endif // MOA_BOARD_H

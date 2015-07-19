@@ -121,7 +121,7 @@ void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
     }
 
     m_board->setEmptyCell(m_destineCell);
-
+    m_board->incrementTries();
     //m_board->attemptWasExecuted();
 }
 

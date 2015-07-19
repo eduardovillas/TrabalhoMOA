@@ -42,7 +42,7 @@ bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
         }
         cell->setValue(value);
     }
-
+    m_tries = 0;
     return m_emptyCell != 0;
 }
 
@@ -163,6 +163,16 @@ void Board::decrementCellsInPosition()
 bool Board::winGame()
 {
     return getCellsInPosition() >= ((SIZE_SIDE_BOARD*SIZE_SIDE_BOARD)-1);
+}
+
+void Board::incrementTries()
+{
+    ++m_tries;
+}
+
+unsigned long long Board::getTries()
+{
+    return m_tries;
 }
 
 

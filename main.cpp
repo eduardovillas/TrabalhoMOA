@@ -12,7 +12,7 @@ void print(Board b);
 void test(int values[][SIZE_SIDE_BOARD]);
 void fillRandomValues(int values[][SIZE_SIDE_BOARD]);
 void solveBoardBruteForce(Board &b);
-void executeOp(Board &b);
+bool executeOp(Board &b);
 
 int main(int argc, char *argv[])
 {
@@ -29,14 +29,13 @@ int main(int argc, char *argv[])
     using namespace std;
     clock_t begin = clock();
 
-
     std::cout << "inicio da tentativa de resolcao" << "\n";
     solveBoardBruteForce(b);
 
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
-    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos" << "\n";
+    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
 
 //    std::cout << "\n";
 //    print(b);
@@ -90,24 +89,36 @@ void test(int values[][SIZE_SIDE_BOARD])
 
 void solveBoardBruteForce(Board &b) {
 
+    unsigned long long int tries = 0;
     while (!b.winGame()) {
-        executeOp(b);
+        if (!executeOp(b))
+            continue;
+        ++tries;
+        if (tries >=  10000000){
+            tries = 0;
+            std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << "\n";
+            print(b);
+        }
+
     }
 
 }
 
-void executeOp(Board &b)
+bool executeOp(Board &b)
 {
     int op;
     op = (rand() % 4)+1;
 
     if (op == 1)
-        b.up();
+        return b.up();
     else if (op == 2)
-        b.down();
+        return b.down();
     else if (op == 3)
-        b.left();
+        return b.left();
     else if (op == 4)
-        b.right();
+        return b.right();
+    else
+        std::cout << "valor invalido";
 
+    return false;
 }
