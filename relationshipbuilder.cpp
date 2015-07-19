@@ -1,7 +1,7 @@
 #include "relationshipbuilder.h"
 #include "moa_global.h"
 
-RelationShipBuilder::RelationShipBuilder(Cell arrayBoard[][4])
+RelationShipBuilder::RelationShipBuilder(Cell arrayBoard[][SIZE_SIDE_BOARD])
 {
 
     for (int i = 0;i < SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {

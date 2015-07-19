@@ -14,7 +14,7 @@ int Board::at(int pos) const
     int row;
     int col;
 
-    calculeRowCol(pos, &row, &col);
+    Cell::calculeRowCol(pos, &row, &col);
 
     return at(row,col);
 }
@@ -30,7 +30,7 @@ bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
     for (int i = 1;i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD;++i) {
         int row;
         int col;
-        calculeRowCol(i, &row, &col);
+        Cell::calculeRowCol(i, &row, &col);
         int value = values[row][col];
 
         Cell *cell = &m_arrayBoard[row][col];
@@ -96,12 +96,6 @@ Cell *Board::getEmptyCell()
     return m_emptyCell;
 }
 
-void Board::calculeRowCol(int pos, int *row, int *col) const
-{
-    *row = (pos-1)/4;
-    *col = ((pos-1)-(*row*4));
-}
-
 void Board::buildRelationshipCells()
 {
     RelationShipBuilder b(m_arrayBoard);
@@ -109,7 +103,7 @@ void Board::buildRelationshipCells()
     for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
         int row;
         int col;
-        calculeRowCol(i, &row, &col);
+        Cell::calculeRowCol(i, &row, &col);
         b.buildRelation(&m_arrayBoard[row][col]);
     }
 }
@@ -119,17 +113,25 @@ void Board::fillCells()
     for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
         int row;
         int col;
-        calculeRowCol(i, &row, &col);
-        Cell cell(row, col, 0, this);
+        Cell::calculeRowCol(i, &row, &col);
+        int value;
+        if (i == SIZE_SIDE_BOARD*SIZE_SIDE_BOARD) {
+            value = 0;
+        } else {
+            value = i;
+        }
+
+        Cell cell(row, col, value, this);
         m_arrayBoard[row][col] = cell;
     }
+    setCellsInPosition(SIZE_SIDE_BOARD*SIZE_SIDE_BOARD);
 }
 
 const Cell *Board::getCell(int pos) const
 {
     int row;
     int col;
-    calculeRowCol(pos, &row, &col);
+    Cell::calculeRowCol(pos, &row, &col);
 
     return getCell(row, col);
 }
@@ -138,4 +140,29 @@ const Cell *Board::getCell(int row, int col) const
 {
     return &m_arrayBoard[row][col];
 }
+int Board::getCellsInPosition() const
+{
+    return m_cellsInPosition;
+}
+
+void Board::setCellsInPosition(int value)
+{
+    m_cellsInPosition = value;
+}
+
+void Board::incrementCellsInPosition()
+{
+    ++m_cellsInPosition;
+}
+
+void Board::decrementCellsInPosition()
+{
+    --m_cellsInPosition;
+}
+
+bool Board::winGame()
+{
+    return getCellsInPosition() >= ((SIZE_SIDE_BOARD*SIZE_SIDE_BOARD)-1);
+}
+
 

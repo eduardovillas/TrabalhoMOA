@@ -1,5 +1,6 @@
 #include "cell.h"
 #include "board.h"
+#include <iostream>
 
 Cell::Cell(int row, int col, int value, Board *board) :
     m_row(row), m_col(col), m_value(value), m_board(board)
@@ -72,6 +73,11 @@ int Cell::getValue() const
 
 void Cell::setValue(int value)
 {
+    int expectedValue;
+    Cell::calculeExpectedValue(m_row, m_col, &expectedValue);
+
+    atualizeStatusGame(m_value, value, expectedValue);
+
     m_value = value;
 }
 
@@ -83,11 +89,40 @@ void Cell::initAdjacentCells()
     m_leftCell = 0;
 }
 
-void Cell::swapCells(Cell *thisCell, Cell *m_destineCell)
+void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
 {
-    thisCell->m_value = m_destineCell->m_value;
-    m_destineCell->m_value = 0;
+
+    int tempValueThisCell;
+    int tempValueDestineCell;
+
+    Cell tempThisCell;
+    Cell tempDestineCell;
+
+    tempThisCell = *thisCell;
+    tempDestineCell = *m_destineCell;
+
+    tempValueThisCell = thisCell->m_value;
+    tempValueDestineCell = m_destineCell->m_value;
+
+    thisCell->m_value = tempValueDestineCell;
+    m_destineCell->m_value = tempValueThisCell;
+
+
+    if (tempThisCell.valueInPosition() && !thisCell->valueInPosition()) {
+        m_board->decrementCellsInPosition();
+    } else if (!tempDestineCell.valueInPosition() && thisCell->valueInPosition()) {
+        m_board->incrementCellsInPosition();
+    }
+
+    if (tempDestineCell.valueInPosition() && !m_destineCell->valueInPosition()) {
+        m_board->decrementCellsInPosition();
+    } else if (!tempDestineCell.valueInPosition() && m_destineCell->valueInPosition() ) {
+        m_board->incrementCellsInPosition();
+    }
+
     m_board->setEmptyCell(m_destineCell);
+
+    //m_board->attemptWasExecuted();
 }
 
 bool Cell::up()
@@ -95,7 +130,7 @@ bool Cell::up()
     if (!canUp())
         return false;
 
-    swapCells(this, m_upCell);
+    swapCellsValues(this, m_upCell);
     return true;
 }
 
@@ -115,7 +150,7 @@ bool Cell::down()
     if (!canDown())
         return false;
 
-    swapCells(this, m_dowCell);
+    swapCellsValues(this, m_dowCell);
     return true;
 }
 
@@ -135,7 +170,7 @@ bool Cell::left()
     if (!canLeft())
         return false;
 
-    swapCells(this, m_leftCell);
+    swapCellsValues(this, m_leftCell);
     return true;
 }
 
@@ -155,7 +190,7 @@ bool Cell::right()
     if (!canRight())
         return false;
 
-    swapCells(this, m_rightCell);
+    swapCellsValues(this, m_rightCell);
     return true;
 }
 
@@ -168,6 +203,41 @@ bool Cell::canRight() const
         return false;
 
     return true;
+}
+
+void Cell::atualizeStatusGame(int currentValue, int nextValue, int expectedValue)
+{
+    if (currentValue != nextValue) {
+        if (nextValue == expectedValue) {
+            m_board->incrementCellsInPosition();
+        } else {
+            m_board->decrementCellsInPosition();
+        }
+    }
+}
+
+void Cell::calculeRowCol(int pos, int *row, int *col)
+{
+    *row = (pos-1)/SIZE_SIDE_BOARD;
+    *col = ((pos-1)-((*row)*SIZE_SIDE_BOARD));
+}
+
+void Cell::calculeExpectedValue(int row, int col, int *absPos)
+{
+    *absPos = col;
+    *absPos += (row * SIZE_SIDE_BOARD);
+    (*absPos)++;
+
+    if (*absPos == SIZE_SIDE_BOARD*SIZE_SIDE_BOARD)
+        *absPos = 0;
+}
+
+bool Cell::valueInPosition() const
+{
+    int expectedValue;
+    Cell::calculeExpectedValue(m_row, m_col, &expectedValue);
+
+    return m_value == expectedValue;
 }
 
 Cell *Cell::getLeftCell() const

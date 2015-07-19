@@ -31,8 +31,15 @@ public:
     void setEmptyCell(Cell *cell);
     Cell *getEmptyCell();
 
+    int getCellsInPosition() const;
+    void setCellsInPosition(int value);
+
+    void incrementCellsInPosition();
+    void decrementCellsInPosition();
+
+    bool winGame();
+
 private:
-    void calculeRowCol(int pos, int *row, int *col) const;
     void buildRelationshipCells();
     void fillCells();
     const Cell *getCell(int pos) const;
@@ -40,6 +47,7 @@ private:
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
+    int m_cellsInPosition;
 	   
 };
 

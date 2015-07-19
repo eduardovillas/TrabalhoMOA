@@ -34,7 +34,7 @@ public:
     Cell *getRightCell() const;
     void setRightCell(Cell *rightCell);
 
-    void swapCells(Cell *thisCell, Cell *m_destineCell);
+    void swapCellsValues(Cell *thisCell, Cell *m_destineCell);
 
     bool up();
     bool canUp() const;
@@ -47,6 +47,14 @@ public:
 
     bool right();
     bool canRight() const;
+
+    void atualizeStatusGame(int currentValue, int nextValue, int expectedValue);
+    void atualizeStatusGame(const Cell *tempThisCell, const Cell *currentCell);
+
+    static void calculeRowCol(int pos, int *row, int *col);
+    static void calculeExpectedValue(int row, int col, int *absPos);
+
+    bool valueInPosition() const;
 
 private:
     void initAdjacentCells();

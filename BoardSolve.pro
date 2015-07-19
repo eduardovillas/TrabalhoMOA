@@ -18,10 +18,12 @@ TEMPLATE = app
 SOURCES += main.cpp \
     board.cpp \
     cell.cpp \
-    relationshipbuilder.cpp
+    relationshipbuilder.cpp \
+    watcherstatisticgame.cpp
 
 HEADERS += \
     board.h \
     cell.h \
     moa_global.h \
-    relationshipbuilder.h
+    relationshipbuilder.h \
+    watcherstatisticgame.h
