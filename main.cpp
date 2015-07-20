@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {
     Board b;
 
-    int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 15, 2, 9, 4},{ 10, 6, 7, 8},{ 3, 5, 11, 12},{ 13, 0, 14, 1}};
+    int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 1, 2, 3, 4},{ 5, 6, 7, 8},{ 9, 10, 11, 12},{ 13, 14, 15, 0}};
 
     std::cout << "Jogo do tabuleiro de 15 peças" << "!\n";
     if (!b.fillValues(values)) {
@@ -29,45 +29,46 @@ int main(int argc, char *argv[])
     using namespace std;
     clock_t begin = clock();
 
+
+    std::cout << "\n";
+    print(b);
+    while (true) {
+        int c = getchar();
+        if (c == 10)
+            continue;
+        std::cout << "char " << c << "\n";
+        if (c == 48) {
+            std::cout << "saindo " << "\n";
+            break;
+        } else if (c == 52) {
+            b.left();
+        } else if (c == 54) {
+            b.right();
+        } else if (c == 56) {
+            b.up();
+        } else if (c == 50) {
+            b.down();
+        } else {
+            std::cout << "tecla invalids " << "\n";
+            continue;
+        }
+        if (b.winGame()) {
+            std::cout << "O JOGO FOI VENCIDO " << "\n";
+            break;
+        }
+
+        std::cout << "\n";
+        print(b);
+    }
+
     std::cout << "inicio da tentativa de resolcao" << "\n";
+
     solveBoardBruteForce(b);
 
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
-
-//    std::cout << "\n";
-//    print(b);
-//    while (true) {
-//        int c = getchar();
-//        if (c == 10)
-//            continue;
-//        std::cout << "char " << c << "\n";
-//        if (c == 48) {
-//            std::cout << "saindo " << "\n";
-//            break;
-//        } else if (c == 52) {
-//            b.left();
-//        } else if (c == 54) {
-//            b.right();
-//        } else if (c == 56) {
-//            b.up();
-//        } else if (c == 50) {
-//            b.down();
-//        } else {
-//            std::cout << "tecla invalids " << "\n";
-//            continue;
-//        }
-//        if (b.winGame()) {
-//            std::cout << "O JOGO FOI VENCIDO " << "\n";
-//            break;
-//        }
-
-//        std::cout << "\n";
-//        print(b);
-//    }
-
 
     return 0;
 }
@@ -89,6 +90,7 @@ void test(int values[][SIZE_SIDE_BOARD])
 
 void solveBoardBruteForce(Board &b) {
 
+    std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << "\n";
     unsigned long long int tries = 0;
     while (!b.winGame()) {
         if (!executeOp(b))
