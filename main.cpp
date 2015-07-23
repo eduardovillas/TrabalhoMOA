@@ -90,15 +90,19 @@ void test(int values[][SIZE_SIDE_BOARD])
 
 void solveBoardBruteForce(Board &b) {
 
-    std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << "\n";
+    int maximumCellsInPosition = 0;
+    srand(time(NULL));
+    std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << " maximo de peças em posicao=" << maximumCellsInPosition << "\n";
     unsigned long long int tries = 0;
     while (!b.winGame()) {
         if (!executeOp(b))
             continue;
         ++tries;
+        maximumCellsInPosition = std::max(maximumCellsInPosition, b.getCellsInPosition());
         if (tries >=  10000000){
+            srand(time(NULL));
             tries = 0;
-            std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << "\n";
+            std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << " maximo de peças em posicao=" << maximumCellsInPosition << "\n";
             print(b);
         }
 

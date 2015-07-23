@@ -24,4 +24,5 @@ HEADERS += \
     board.h \
     cell.h \
     moa_global.h \
-    relationshipbuilder.h
+    relationshipbuilder.h \
+    tree.h

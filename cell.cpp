@@ -1,6 +1,7 @@
 #include "cell.h"
 #include "board.h"
 #include <iostream>
+#include <QTranslator>
 
 Cell::Cell(int row, int col, int value, Board *board) :
     m_row(row), m_col(col), m_value(value), m_board(board)
