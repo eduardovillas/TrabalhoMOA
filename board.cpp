@@ -115,11 +115,7 @@ void Board::fillCells()
         int col;
         Cell::calculeRowCol(i, &row, &col);
         int value;
-        if (i == SIZE_SIDE_BOARD*SIZE_SIDE_BOARD) {
-            value = 0;
-        } else {
-            value = i;
-        }
+        Cell::calculeExpectedValue(row, col, &value);
 
         Cell cell(row, col, value, this);
         m_arrayBoard[row][col] = cell;

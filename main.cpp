@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {
     Board b;
 
-    int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 1, 2, 3, 4},{ 5, 6, 7, 8},{ 9, 10, 11, 12},{ 13, 14, 15, 0}};
+    int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
     std::cout << "Jogo do tabuleiro de 15 peças" << "!\n";
     if (!b.fillValues(values)) {
@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
             continue;
         }
         if (b.winGame()) {
+            print(b);
             std::cout << "O JOGO FOI VENCIDO " << "\n";
             break;
         }

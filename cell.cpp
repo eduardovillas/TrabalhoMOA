@@ -1,7 +1,9 @@
 #include "cell.h"
 #include "board.h"
 #include <iostream>
-#include <QTranslator>
+#include "moa_global.h"
+
+static int s_MatrixExpectedValues[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
 Cell::Cell(int row, int col, int value, Board *board) :
     m_row(row), m_col(col), m_value(value), m_board(board)
@@ -225,12 +227,8 @@ void Cell::calculeRowCol(int pos, int *row, int *col)
 
 void Cell::calculeExpectedValue(int row, int col, int *absPos)
 {
-    *absPos = col;
-    *absPos += (row * SIZE_SIDE_BOARD);
-    (*absPos)++;
 
-    if (*absPos == SIZE_SIDE_BOARD*SIZE_SIDE_BOARD)
-        *absPos = 0;
+    *absPos = s_MatrixExpectedValues[row][col];
 }
 
 bool Cell::valueInPosition() const
