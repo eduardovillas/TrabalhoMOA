@@ -8,7 +8,6 @@ static int s_MatrixExpectedValues[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4}
 Cell::Cell(int row, int col, int value, Board *board) :
     m_row(row), m_col(col), m_value(value), m_board(board)
 {
-    initAdjacentCells();
 }
 
 Cell::Cell(const Cell &other)
@@ -19,7 +18,6 @@ Cell::Cell(const Cell &other)
 Cell::Cell() :
     m_row(0), m_col(0), m_value(0)
 {
-    initAdjacentCells();
 }
 
 Cell::~Cell()
@@ -40,11 +38,7 @@ bool Cell::operator==(const Cell &other)
 {
     return m_row == other.m_row &&
             m_col == other.m_col &&
-            m_value == other.m_value &&
-            m_upCell == other.m_upCell &&
-            m_dowCell == other.m_dowCell &&
-            m_leftCell == other.m_leftCell &&
-            m_rightCell == other.m_rightCell;
+            m_value == other.m_value; /* TODO: m_board TAMBEM ENTRA NA VERIFICACAO?*/
 }
 
 void Cell::swap(const Cell &other)
@@ -52,10 +46,6 @@ void Cell::swap(const Cell &other)
     m_row = other.m_row;
     m_col = other.m_col;
     m_value = other.m_value;
-    m_upCell = other.m_upCell;
-    m_dowCell = other.m_dowCell;
-    m_leftCell = other.m_leftCell;
-    m_rightCell = other.m_rightCell;
     m_board = other.m_board;
 }
 
@@ -84,17 +74,8 @@ void Cell::setValue(int value)
     m_value = value;
 }
 
-void Cell::initAdjacentCells()
-{
-    m_upCell = 0;
-    m_dowCell = 0;
-    m_rightCell = 0;
-    m_leftCell = 0;
-}
-
 void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
 {
-
     int tempValueThisCell;
     int tempValueDestineCell;
 
@@ -125,7 +106,6 @@ void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
 
     m_board->setEmptyCell(m_destineCell);
     m_board->incrementTries();
-    //m_board->attemptWasExecuted();
 }
 
 bool Cell::up()
@@ -133,13 +113,13 @@ bool Cell::up()
     if (!canUp())
         return false;
 
-    swapCellsValues(this, m_upCell);
+    swapCellsValues(this, m_board->getUpCell());
     return true;
 }
 
 bool Cell::canUp() const
 {
-    if (m_upCell == 0)
+    if (m_board->getUpCell() == 0)
         return false;
 
     if (m_value != 0)
@@ -153,13 +133,13 @@ bool Cell::down()
     if (!canDown())
         return false;
 
-    swapCellsValues(this, m_dowCell);
+    swapCellsValues(this, m_board->getDownCell());
     return true;
 }
 
 bool Cell::canDown() const
 {
-    if (m_dowCell == 0)
+    if (m_board->getDownCell() == 0)
         return false;
 
     if (m_value != 0)
@@ -173,13 +153,13 @@ bool Cell::left()
     if (!canLeft())
         return false;
 
-    swapCellsValues(this, m_leftCell);
+    swapCellsValues(this, m_board->getLeftCell());
     return true;
 }
 
 bool Cell::canLeft() const
 {
-    if (m_leftCell == 0)
+    if (m_board->getLeftCell() == 0)
         return false;
 
     if (m_value != 0)
@@ -193,13 +173,13 @@ bool Cell::right()
     if (!canRight())
         return false;
 
-    swapCellsValues(this, m_rightCell);
+    swapCellsValues(this, m_board->getRightCell());
     return true;
 }
 
 bool Cell::canRight() const
 {
-    if (m_rightCell == 0)
+    if (m_board->getRightCell() == 0)
         return false;
 
     if (m_value != 0)
@@ -237,45 +217,5 @@ bool Cell::valueInPosition() const
     Cell::calculeExpectedValue(m_row, m_col, &expectedValue);
 
     return m_value == expectedValue;
-}
-
-Cell *Cell::getLeftCell() const
-{
-    return m_leftCell;
-}
-
-void Cell::setLeftCell(Cell *leftCell)
-{
-    m_leftCell = leftCell;
-}
-
-Cell *Cell::getDowCell() const
-{
-    return m_dowCell;
-}
-
-void Cell::setDowCell(Cell *dowCell)
-{
-    m_dowCell = dowCell;
-}
-
-Cell *Cell::getUpCell() const
-{
-    return m_upCell;
-}
-
-void Cell::setUpCell(Cell *upCell)
-{
-    m_upCell = upCell;
-}
-
-Cell *Cell::getRightCell() const
-{
-    return m_rightCell;
-}
-
-void Cell::setRightCell(Cell *rightCell)
-{
-    m_rightCell = rightCell;
 }
 

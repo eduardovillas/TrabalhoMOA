@@ -1,27 +1,10 @@
 #include "board.h"
-#include "relationshipbuilder.h"
 
 Board::Board() : m_emptyCell(0) {
-    fillCells();
-    buildRelationshipCells();
+    createCells();
 }
 
 Board::~Board() {
-}
-
-int Board::at(int pos) const
-{
-    int row;
-    int col;
-
-    Cell::calculeRowCol(pos, &row, &col);
-
-    return at(row,col);
-}
-
-int Board::at(int x, int y) const
-{
-    return m_arrayBoard[x][y].getValue();
 }
 
 bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
@@ -46,6 +29,21 @@ bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
     return m_emptyCell != 0;
 }
 
+int Board::at(int pos) const
+{
+    int row;
+    int col;
+
+    Cell::calculeRowCol(pos, &row, &col);
+
+    return at(row,col);
+}
+
+int Board::at(int x, int y) const
+{
+    return m_arrayBoard[x][y].getValue();
+}
+
 bool Board::up()
 {
     return m_emptyCell->up();
@@ -53,7 +51,7 @@ bool Board::up()
 
 bool Board::canUp() const
 {
-    return m_emptyCell;
+    return m_emptyCell->canUp();
 }
 
 bool Board::down()
@@ -96,19 +94,7 @@ Cell *Board::getEmptyCell()
     return m_emptyCell;
 }
 
-void Board::buildRelationshipCells()
-{
-    RelationShipBuilder b(m_arrayBoard);
-
-    for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
-        int row;
-        int col;
-        Cell::calculeRowCol(i, &row, &col);
-        b.buildRelation(&m_arrayBoard[row][col]);
-    }
-}
-
-void Board::fillCells()
+void Board::createCells()
 {
     for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
         int row;
@@ -123,7 +109,7 @@ void Board::fillCells()
     setCellsInPosition(SIZE_SIDE_BOARD*SIZE_SIDE_BOARD);
 }
 
-const Cell *Board::getCell(int pos) const
+Cell *Board::getCell(int pos)
 {
     int row;
     int col;
@@ -132,10 +118,11 @@ const Cell *Board::getCell(int pos) const
     return getCell(row, col);
 }
 
-const Cell *Board::getCell(int row, int col) const
+Cell *Board::getCell(int row, int col)
 {
     return &m_arrayBoard[row][col];
 }
+
 int Board::getCellsInPosition() const
 {
     return m_cellsInPosition;
@@ -169,6 +156,52 @@ void Board::incrementTries()
 unsigned long long Board::getTries()
 {
     return m_tries;
+}
+
+Cell *Board::getUpCell()
+{
+    int row = m_emptyCell->getRow();
+    int col = m_emptyCell->getCol();
+
+    if (row == 0)
+        return 0;
+
+    return &m_arrayBoard[--row][col];
+}
+
+Cell *Board::getDownCell()
+{
+    int row = m_emptyCell->getRow();
+    int col = m_emptyCell->getCol();
+
+    if (row == SIZE_SIDE_BOARD-1)
+        return 0;
+
+    return &m_arrayBoard[++row][col];
+}
+
+Cell *Board::getLeftCell()
+{
+    int row = m_emptyCell->getRow();
+    int col = m_emptyCell->getCol();
+
+    if (col == 0)
+        return 0;
+
+    return &m_arrayBoard[row][--col];
+
+}
+
+Cell *Board::getRightCell()
+{
+    int row = m_emptyCell->getRow();
+    int col = m_emptyCell->getCol();
+
+    if (col == SIZE_SIDE_BOARD-1)
+        return 0;
+
+    return &m_arrayBoard[row][++col];
+
 }
 
 

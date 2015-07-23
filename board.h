@@ -12,9 +12,9 @@ public:
     Board();
     virtual ~Board();
 
+    bool fillValues(int values[][SIZE_SIDE_BOARD]);
     int at(int pos) const;
     int at(int x, int y) const;
-    bool fillValues(int values[][SIZE_SIDE_BOARD]);
 
     bool up();
     bool canUp() const;
@@ -41,11 +41,15 @@ public:
     void incrementTries();
     unsigned long long int getTries();
 
+    Cell *getUpCell();
+    Cell *getDownCell();
+    Cell *getLeftCell();
+    Cell *getRightCell();
+
 private:
-    void buildRelationshipCells();
-    void fillCells();
-    const Cell *getCell(int pos) const;
-    const Cell *getCell(int row, int col) const;
+    void createCells();
+    Cell *getCell(int pos);
+    Cell *getCell(int row, int col);
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
