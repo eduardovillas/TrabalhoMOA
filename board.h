@@ -1,5 +1,3 @@
-
-
 #ifndef MOA_BOARD_H
 #define MOA_BOARD_H
 
@@ -9,7 +7,7 @@
 class Board {
 
 public: 
-    Board();
+    Board();/*TODO: CONSTRUTOR DE COPIA E DE ATRIBUICAO*/
     virtual ~Board();
 
     bool fillValues(int values[][SIZE_SIDE_BOARD]);

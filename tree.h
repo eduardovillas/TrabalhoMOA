@@ -2,14 +2,20 @@
 #define MOA_TREE_H
 
 
-template <typename TType, int N>
+template <typename NodeType>
+class NodeTree {
+
+};
+
+
+template <typename NodeType, int N>
 class Tree
 {
 public:
     Tree();
 
-
-    TType *childreen[N];
+private:
+    NodeTree<NodeType> *root;
 
 };
 
