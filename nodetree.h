@@ -9,8 +9,10 @@ class Tree;
 template <typename NodeType>
 class NodeTree {
 
-    NodeType *data;
-    NodeTree<NodeType> *children[SIZE_SIDE_BOARD];
+private:
+    NodeTree<NodeType> *m_parent;
+    NodeType *m_data;
+    NodeTree<NodeType> *m_children[SIZE_SIDE_BOARD];
 
     friend class Tree<NodeType>;
 

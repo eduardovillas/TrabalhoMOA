@@ -40,14 +40,34 @@ bool Tree<NodeType>::isEmpty()
 
 template<typename NodeType>
 bool Tree<NodeType>::append(NodeType &value)
-{
+{/*TODO: algoritmo ainda nao esta pronto, parei por que surgiu uma dúvida
+         alem disso vou tratar da parte de copia do board e resolucao sem qualquer
+         euristica que seja, depois vou voltar aqui.*/
     if (isEmpty()) {
         m_root = new NodeTree<NodeType>();
         if (m_root == 0)
             return false;
+
+        m_root->m_parent = 0;
+        m_root->m_data = new NodeType(value);
+        return true;
     }
 
-    m_root->data = new NodeType(value);
+    NodeTree<NodeType> *currentNode = m_root;
+    while (currentNode != 0) {
+        NodeTree<NodeType> *currentChildren;
+        for (int i = SIZE_SIDE_BOARD - 1;i <= 0;++i){
+            if (currentNode->m_children[i] != 0)
+                currentChildren = currentNode->currentNode->m_children[i];
+            else {
+                break;
+            }
+        }
+
+    }
+
+    if (currentNode == 0)
+        return false;
 
     return true;
 }
