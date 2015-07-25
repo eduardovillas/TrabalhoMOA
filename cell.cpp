@@ -219,3 +219,8 @@ bool Cell::valueInPosition() const
     return m_value == expectedValue;
 }
 
+void Cell::setBoard(Board *board)
+{
+    m_board = board;
+}
+

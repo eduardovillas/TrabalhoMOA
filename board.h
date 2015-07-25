@@ -7,7 +7,11 @@
 class Board {
 
 public: 
-    Board();/*TODO: CONSTRUTOR DE COPIA E DE ATRIBUICAO*/
+    Board();
+    Board(const Board & other);
+
+    Board &operator=(const Board &other);
+
     virtual ~Board();
 
     bool fillValues(int values[][SIZE_SIDE_BOARD]);
@@ -45,6 +49,8 @@ public:
     Cell *getRightCell();
 
 private:
+    bool copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD]);
+    void swap(const Board &other);
     void createCells();
     Cell *getCell(int pos);
     Cell *getCell(int row, int col);

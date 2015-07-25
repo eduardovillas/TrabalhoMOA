@@ -17,6 +17,7 @@ bool executeOp(Board &b);
 int main(int argc, char *argv[])
 {
     Board b;
+    Board a;
 
     int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
@@ -26,12 +27,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    using namespace std;
-    clock_t begin = clock();
-
-
     std::cout << "\n";
     print(b);
+    a = b;
     while (true) {
         int c = getchar();
         if (c == 10)
@@ -62,14 +60,50 @@ int main(int argc, char *argv[])
         print(b);
     }
 
-    std::cout << "inicio da tentativa de resolcao" << "\n";
+    std::cout << "\n";
+    print(a);
+    while (true) {
+        int c = getchar();
+        if (c == 10)
+            continue;
+        std::cout << "char " << c << "\n";
+        if (c == 48) {
+            std::cout << "saindo " << "\n";
+            break;
+        } else if (c == 52) {
+            a.left();
+        } else if (c == 54) {
+            a.right();
+        } else if (c == 56) {
+            a.up();
+        } else if (c == 50) {
+            a.down();
+        } else {
+            std::cout << "tecla invalids " << "\n";
+            continue;
+        }
+        if (a.winGame()) {
+            print(a);
+            std::cout << "O JOGO FOI VENCIDO " << "\n";
+            break;
+        }
 
-    solveBoardBruteForce(b);
+        std::cout << "\n";
+        print(a);
 
-    clock_t end = clock();
-    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    }
 
-    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
+//    using namespace std;
+//    clock_t begin = clock();
+
+//    std::cout << "inicio da tentativa de resolcao" << "\n";
+
+//    solveBoardBruteForce(b);
+
+//    clock_t end = clock();
+//    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+//    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
 
     return 0;
 }

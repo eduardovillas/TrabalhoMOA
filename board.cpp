@@ -4,6 +4,20 @@ Board::Board() : m_emptyCell(0) {
     createCells();
 }
 
+Board::Board(const Board &other)
+{
+    createCells();
+    swap(other);
+}
+
+Board &Board::operator=(const Board &other)
+{
+    createCells();
+    swap(other);
+
+    return *this;
+}
+
 Board::~Board() {
 }
 
@@ -145,7 +159,7 @@ void Board::decrementCellsInPosition()
 
 bool Board::winGame()
 {
-    return getCellsInPosition() >= ((SIZE_SIDE_BOARD*SIZE_SIDE_BOARD)-1);
+    return getCellsInPosition() >= ((SIZE_SIDE_BOARD*SIZE_SIDE_BOARD));
 }
 
 void Board::incrementTries()
@@ -201,6 +215,34 @@ Cell *Board::getRightCell()
         return 0;
 
     return &m_arrayBoard[row][++col];
+
+}
+
+bool Board::copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD])
+{
+
+    for (int i = 0; i < SIZE_SIDE_BOARD; ++i){
+        for (int j = 0; j < SIZE_SIDE_BOARD; ++j) {
+            m_arrayBoard[i][j] = arrayBoard[i][j];
+            m_arrayBoard[i][i].setBoard(this);
+        }
+    }
+
+    return true;
+}
+
+void Board::swap(const Board &other)
+{
+    copyCells(other.m_arrayBoard);
+    int row;
+    int col;
+
+    row = other.m_emptyCell->getRow();
+    col = other.m_emptyCell->getCol();
+
+    m_emptyCell = &m_arrayBoard[row][col];
+    m_cellsInPosition = other.m_cellsInPosition;
+    m_tries = other.m_tries;
 
 }
 

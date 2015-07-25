@@ -43,7 +43,7 @@ public:
     static void calculeExpectedValue(int row, int col, int *absPos);
 
     bool valueInPosition() const;
-
+    void setBoard(Board *board);
 private:
     void initAdjacentCells();
     int m_row;
