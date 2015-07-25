@@ -17,10 +17,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     board.cpp \
-    cell.cpp
+    cell.cpp \
+    a_star.cpp
 
 HEADERS += \
     board.h \
     cell.h \
     moa_global.h \
-    nodetree.h
+    nodetree.h \
+    a_star.h

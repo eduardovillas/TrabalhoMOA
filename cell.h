@@ -6,7 +6,7 @@ class Board;
 class Cell
 {
 public:
-    Cell(int row, int col, int value = 0, Board *board = 0);
+    Cell(char row, char col, char value = 0, Board *board = 0);
     Cell(const Cell &other);
     Cell();
     virtual ~Cell();
@@ -16,10 +16,10 @@ public:
 
     void swap(const Cell &other);
 
-    int getRow();
-    int getCol();
+    char getRow();
+    char getCol();
 
-    int getValue() const;
+    char getValue() const;
     void setValue(int value);
 
     void swapCellsValues(Cell *thisCell, Cell *m_destineCell);
@@ -36,7 +36,7 @@ public:
     bool right();
     bool canRight() const;
 
-    void atualizeStatusGame(int currentValue, int nextValue, int expectedValue);
+    void atualizeStatusGame(char currentValue, char nextValue, char expectedValue);
     void atualizeStatusGame(const Cell *tempThisCell, const Cell *currentCell);
 
     static void calculeRowCol(int pos, int *row, int *col);
@@ -46,9 +46,9 @@ public:
     void setBoard(Board *board);
 private:
     void initAdjacentCells();
-    int m_row;
-    int m_col;
-    int m_value;
+    char m_row;
+    char m_col;
+    char m_value;
     Board *m_board;
 
 };

@@ -21,14 +21,14 @@ Board &Board::operator=(const Board &other)
 Board::~Board() {
 }
 
-bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
+bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
 {
     m_emptyCell = 0;
-    for (int i = 1;i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD;++i) {
+    for (char i = 1;i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD;++i) {
         int row;
         int col;
         Cell::calculeRowCol(i, &row, &col);
-        int value = values[row][col];
+        char value = values[row][col];
 
         Cell *cell = &m_arrayBoard[row][col];
 
@@ -43,7 +43,7 @@ bool Board::fillValues(int values[][SIZE_SIDE_BOARD])
     return m_emptyCell != 0;
 }
 
-int Board::at(int pos) const
+char Board::at(int pos) const
 {
     int row;
     int col;
@@ -53,7 +53,7 @@ int Board::at(int pos) const
     return at(row,col);
 }
 
-int Board::at(int x, int y) const
+char Board::at(int x, int y) const
 {
     return m_arrayBoard[x][y].getValue();
 }
@@ -110,7 +110,7 @@ Cell *Board::getEmptyCell()
 
 void Board::createCells()
 {
-    for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
+    for (char i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
         int row;
         int col;
         Cell::calculeRowCol(i, &row, &col);
@@ -123,7 +123,7 @@ void Board::createCells()
     setCellsInPosition(SIZE_SIDE_BOARD*SIZE_SIDE_BOARD);
 }
 
-Cell *Board::getCell(int pos)
+Cell *Board::getCell(char pos)
 {
     int row;
     int col;
@@ -137,12 +137,12 @@ Cell *Board::getCell(int row, int col)
     return &m_arrayBoard[row][col];
 }
 
-int Board::getCellsInPosition() const
+char Board::getCellsInPosition() const
 {
     return m_cellsInPosition;
 }
 
-void Board::setCellsInPosition(int value)
+void Board::setCellsInPosition(char value)
 {
     m_cellsInPosition = value;
 }

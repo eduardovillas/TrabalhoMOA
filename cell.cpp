@@ -3,9 +3,9 @@
 #include <iostream>
 #include "moa_global.h"
 
-static int s_MatrixExpectedValues[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
+static char s_MatrixExpectedValues[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
-Cell::Cell(int row, int col, int value, Board *board) :
+Cell::Cell(char row, char col, char value, Board *board) :
     m_row(row), m_col(col), m_value(value), m_board(board)
 {
 }
@@ -49,17 +49,17 @@ void Cell::swap(const Cell &other)
     m_board = other.m_board;
 }
 
-int Cell::getRow()
+char Cell::getRow()
 {
     return m_row;
 }
 
-int Cell::getCol()
+char Cell::getCol()
 {
     return m_col;
 }
 
-int Cell::getValue() const
+char Cell::getValue() const
 {
     return m_value;
 }
@@ -76,8 +76,8 @@ void Cell::setValue(int value)
 
 void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
 {
-    int tempValueThisCell;
-    int tempValueDestineCell;
+    char tempValueThisCell;
+    char tempValueDestineCell;
 
     Cell tempThisCell;
     Cell tempDestineCell;
@@ -188,7 +188,7 @@ bool Cell::canRight() const
     return true;
 }
 
-void Cell::atualizeStatusGame(int currentValue, int nextValue, int expectedValue)
+void Cell::atualizeStatusGame(char currentValue, char nextValue, char expectedValue)
 {
     if (currentValue != nextValue) {
         if (nextValue == expectedValue) {

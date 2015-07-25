@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     Board b;
     Board a;
 
-    int values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
+    char values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
     std::cout << "Jogo do tabuleiro de 15 peças" << "!\n";
     if (!b.fillValues(values)) {
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 void print(Board b)
 {
     for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
-        std::cout << std::setw(2) << b.at(i) << " ";
+        std::cout << std::setw(2) << (int)b.at(i) << " ";
         if (i % SIZE_SIDE_BOARD == 0)
             std::cout << "\n";
     }
@@ -133,7 +133,7 @@ void solveBoardBruteForce(Board &b) {
         if (!executeOp(b))
             continue;
         ++tries;
-        maximumCellsInPosition = std::max(maximumCellsInPosition, b.getCellsInPosition());
+        maximumCellsInPosition = std::max(maximumCellsInPosition, (int)b.getCellsInPosition());
         if (tries >=  10000000){
             srand(time(NULL));
             tries = 0;

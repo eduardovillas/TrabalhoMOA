@@ -14,9 +14,9 @@ public:
 
     virtual ~Board();
 
-    bool fillValues(int values[][SIZE_SIDE_BOARD]);
-    int at(int pos) const;
-    int at(int x, int y) const;
+    bool fillValues(char values[][SIZE_SIDE_BOARD]);
+    char at(int pos) const;
+    char at(int x, int y) const;
 
     bool up();
     bool canUp() const;
@@ -33,8 +33,8 @@ public:
     void setEmptyCell(Cell *cell);
     Cell *getEmptyCell();
 
-    int getCellsInPosition() const;
-    void setCellsInPosition(int value);
+    char getCellsInPosition() const;
+    void setCellsInPosition(char value);
 
     void incrementCellsInPosition();
     void decrementCellsInPosition();
@@ -52,12 +52,12 @@ private:
     bool copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD]);
     void swap(const Board &other);
     void createCells();
-    Cell *getCell(int pos);
+    Cell *getCell(char pos);
     Cell *getCell(int row, int col);
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
-    int m_cellsInPosition;
+    char m_cellsInPosition;
     unsigned long long int m_tries;
 };
 
