@@ -23,4 +23,5 @@ HEADERS += \
     board.h \
     cell.h \
     moa_global.h \
-    tree.h
+    tree.h \
+    nodetree.h
