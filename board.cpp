@@ -24,21 +24,22 @@ Board::~Board() {
 bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
 {
     m_emptyCell = 0;
-    for (char i = 1;i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD;++i) {
-        int row;
-        int col;
-        Cell::calculeRowCol(i, &row, &col);
-        char value = values[row][col];
 
-        Cell *cell = &m_arrayBoard[row][col];
+    for (int row = 0; row < SIZE_SIDE_BOARD; ++row) {
+        for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
+            char value = values[row][col];
+            Cell *cell = &m_arrayBoard[row][col];
 
-        if (value == 0 ) {
-            if (m_emptyCell != 0)
-                return false;
-            m_emptyCell = cell;
+            if (value == 0 ) {
+                if (m_emptyCell != 0)
+                    return false;
+                m_emptyCell = cell;
+            }
+
+            cell->setValue(value);
         }
-        cell->setValue(value);
     }
+
     m_tries = 0;
     return m_emptyCell != 0;
 }
@@ -110,16 +111,17 @@ Cell *Board::getEmptyCell()
 
 void Board::createCells()
 {
-    for (char i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
-        int row;
-        int col;
-        Cell::calculeRowCol(i, &row, &col);
-        int value;
-        Cell::calculeExpectedValue(row, col, &value);
+    for (int row =0 ; row < SIZE_SIDE_BOARD; ++row) {
+        for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
 
-        Cell cell(row, col, value, this);
-        m_arrayBoard[row][col] = cell;
+            int expectedValue;
+            Cell::calculeExpectedValue(row, col, &expectedValue);
+            Cell cell(row, col, expectedValue, this);
+            m_arrayBoard[row][col] = cell;
+
+        }
     }
+
     setCellsInPosition(SIZE_SIDE_BOARD*SIZE_SIDE_BOARD);
 }
 
@@ -221,10 +223,10 @@ Cell *Board::getRightCell()
 bool Board::copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD])
 {
 
-    for (int i = 0; i < SIZE_SIDE_BOARD; ++i){
-        for (int j = 0; j < SIZE_SIDE_BOARD; ++j) {
-            m_arrayBoard[i][j] = arrayBoard[i][j];
-            m_arrayBoard[i][i].setBoard(this);
+    for (int row = 0; row < SIZE_SIDE_BOARD; ++row){
+        for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
+            m_arrayBoard[row][col] = arrayBoard[row][col];
+            m_arrayBoard[row][col].setBoard(this);
         }
     }
 

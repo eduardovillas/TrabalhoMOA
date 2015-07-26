@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include "moa_global.h"
-
+#include "a_star.h"
 
 void print(Board b);
 void test(int values[][SIZE_SIDE_BOARD]);
@@ -17,7 +17,6 @@ bool executeOp(Board &b);
 int main(int argc, char *argv[])
 {
     Board b;
-    Board a;
 
     char values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
 
     std::cout << "\n";
     print(b);
-    a = b;
+
     while (true) {
         int c = getchar();
         if (c == 10)
@@ -60,50 +59,17 @@ int main(int argc, char *argv[])
         print(b);
     }
 
-    std::cout << "\n";
-    print(a);
-    while (true) {
-        int c = getchar();
-        if (c == 10)
-            continue;
-        std::cout << "char " << c << "\n";
-        if (c == 48) {
-            std::cout << "saindo " << "\n";
-            break;
-        } else if (c == 52) {
-            a.left();
-        } else if (c == 54) {
-            a.right();
-        } else if (c == 56) {
-            a.up();
-        } else if (c == 50) {
-            a.down();
-        } else {
-            std::cout << "tecla invalids " << "\n";
-            continue;
-        }
-        if (a.winGame()) {
-            print(a);
-            std::cout << "O JOGO FOI VENCIDO " << "\n";
-            break;
-        }
+    using namespace std;
+    clock_t begin = clock();
 
-        std::cout << "\n";
-        print(a);
+    std::cout << "inicio da tentativa de resolcao" << "\n";
 
-    }
+    solveBoardBruteForce(b);
 
-//    using namespace std;
-//    clock_t begin = clock();
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
-//    std::cout << "inicio da tentativa de resolcao" << "\n";
-
-//    solveBoardBruteForce(b);
-
-//    clock_t end = clock();
-//    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-
-//    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
+    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
 
     return 0;
 }
@@ -125,23 +91,9 @@ void test(int values[][SIZE_SIDE_BOARD])
 
 void solveBoardBruteForce(Board &b) {
 
-    int maximumCellsInPosition = 0;
-    srand(time(NULL));
-    std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << " maximo de peças em posicao=" << maximumCellsInPosition << "\n";
-    unsigned long long int tries = 0;
-    while (!b.winGame()) {
-        if (!executeOp(b))
-            continue;
-        ++tries;
-        maximumCellsInPosition = std::max(maximumCellsInPosition, (int)b.getCellsInPosition());
-        if (tries >=  10000000){
-            srand(time(NULL));
-            tries = 0;
-            std::cout << "movimentos=" << b.getTries() << " peças em posicao=" << b.getCellsInPosition() << " maximo de peças em posicao=" << maximumCellsInPosition << "\n";
-            print(b);
-        }
+    A_Star a;
 
-    }
+    a.search(b);
 
 }
 
