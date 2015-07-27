@@ -3,6 +3,7 @@
 
 #include "cell.h"
 #include "moa_global.h"
+#include <string>
 
 class Board {
 
@@ -11,6 +12,8 @@ public:
     Board(const Board & other);
 
     Board &operator=(const Board &other);
+    bool operator<(const Board &other);
+    bool operator>(const Board &other);
 
     virtual ~Board();
 
@@ -48,6 +51,8 @@ public:
     Cell *getLeftCell();
     Cell *getRightCell();
 
+    std::string getKey();
+
 private:
     bool copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD]);
     void swap(const Board &other);
@@ -59,6 +64,7 @@ private:
     Cell *m_emptyCell;
     char m_cellsInPosition;
     unsigned long long int m_tries;
+    std::string m_key;
 };
 
 #endif // MOA_BOARD_H

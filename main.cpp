@@ -11,10 +11,60 @@
 void print(Board b);
 void test(int values[][SIZE_SIDE_BOARD]);
 void fillRandomValues(int values[][SIZE_SIDE_BOARD]);
-void solveBoardBruteForce(Board &b);
+//void solveBoardBruteForce(Board &b);
 bool executeOp(Board &b);
+void testBoard();
+void testNodeTree();
 
 int main(int argc, char *argv[])
+{
+    testNodeTree();
+
+    return 0;
+}
+
+void print(Board b)
+{
+    for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
+        std::cout << std::setw(2) << (int)b.at(i) << " ";
+        if (i % SIZE_SIDE_BOARD == 0)
+            std::cout << "\n";
+    }
+
+}
+
+void test(int values[][SIZE_SIDE_BOARD])
+{
+    values[0][0] = 70;
+}
+
+//void solveBoardBruteForce(Board &b) {
+
+////    A_Star a;
+////    a.search(b);
+
+//}
+
+bool executeOp(Board &b)
+{
+    int op;
+    op = (rand() % 4)+1;
+
+    if (op == 1)
+        return b.up();
+    else if (op == 2)
+        return b.down();
+    else if (op == 3)
+        return b.left();
+    else if (op == 4)
+        return b.right();
+    else
+        std::cout << "valor invalido";
+
+    return false;
+}
+
+void testBoard()
 {
     Board b;
 
@@ -23,7 +73,7 @@ int main(int argc, char *argv[])
     std::cout << "Jogo do tabuleiro de 15 peças" << "!\n";
     if (!b.fillValues(values)) {
         std::cout << "Erro valores inválidos" << "!\n";
-        return 1;
+        return;
     }
 
     std::cout << "\n";
@@ -58,60 +108,34 @@ int main(int argc, char *argv[])
         std::cout << "\n";
         print(b);
     }
+    //    using namespace std;
+    //    clock_t begin = clock();
 
-    using namespace std;
-    clock_t begin = clock();
+    //    std::cout << "inicio da tentativa de resolcao" << "\n";
 
-    std::cout << "inicio da tentativa de resolcao" << "\n";
+    //    solveBoardBruteForce(b);
 
-    solveBoardBruteForce(b);
+    //    clock_t end = clock();
+    //    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
-    clock_t end = clock();
-    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    //    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
 
-    std::cout << "resolucao em " << elapsed_secs/ 60 << " minutos "<< b.getTries() << " movimentos" << "\n";
+    //    return 0;
 
-    return 0;
 }
 
-void print(Board b)
+void testNodeTree()
 {
-    for (int i = 1; i <= SIZE_SIDE_BOARD*SIZE_SIDE_BOARD; ++i) {
-        std::cout << std::setw(2) << (int)b.at(i) << " ";
-        if (i % SIZE_SIDE_BOARD == 0)
-            std::cout << "\n";
-    }
+    Board *b = new Board();
+    NodeTree<Board> *nodeb = new NodeTree<Board>(b);
 
-}
+    //NodeTree<Board> ** children = node->children();
 
-void test(int values[][SIZE_SIDE_BOARD])
-{
-    values[0][0] = 70;
-}
+    Board *c = new Board();
 
-void solveBoardBruteForce(Board &b) {
+    NodeTree<Board> *nodeC = new NodeTree<Board>(c);
 
-    A_Star a;
+    nodeb->appendChildren(nodeC);
 
-    a.search(b);
-
-}
-
-bool executeOp(Board &b)
-{
-    int op;
-    op = (rand() % 4)+1;
-
-    if (op == 1)
-        return b.up();
-    else if (op == 2)
-        return b.down();
-    else if (op == 3)
-        return b.left();
-    else if (op == 4)
-        return b.right();
-    else
-        std::cout << "valor invalido";
-
-    return false;
+    delete nodeb;
 }

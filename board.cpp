@@ -18,6 +18,16 @@ Board &Board::operator=(const Board &other)
     return *this;
 }
 
+bool Board::operator<(const Board &other)
+{
+    return m_cellsInPosition + m_tries < other.m_cellsInPosition + other.m_tries;
+}
+
+bool Board::operator>(const Board &other)
+{
+    return m_cellsInPosition + m_tries > other.m_cellsInPosition + other.m_tries;
+}
+
 Board::~Board() {
 }
 
@@ -220,13 +230,20 @@ Cell *Board::getRightCell()
 
 }
 
+std::string Board::getKey()
+{
+    return m_key;
+}
+
 bool Board::copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD])
 {
 
+    m_key = "";
     for (int row = 0; row < SIZE_SIDE_BOARD; ++row){
         for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
             m_arrayBoard[row][col] = arrayBoard[row][col];
             m_arrayBoard[row][col].setBoard(this);
+            m_key += std::to_string(m_arrayBoard[row][col].getValue()) + " ";
         }
     }
 
