@@ -47,6 +47,7 @@ void Cell::swap(const Cell &other)
     m_col = other.m_col;
     m_value = other.m_value;
     m_board = other.m_board;
+
 }
 
 char Cell::getRow()
@@ -106,6 +107,7 @@ void Cell::swapCellsValues(Cell *thisCell, Cell *m_destineCell)
 
     m_board->setEmptyCell(m_destineCell);
     m_board->incrementTries();
+    m_board->recalculeKey();
 }
 
 bool Cell::up()

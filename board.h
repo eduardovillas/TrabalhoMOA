@@ -37,7 +37,7 @@ public:
     Cell *getEmptyCell();
 
     char getCellsInPosition() const;
-    void setCellsInPosition(char value);
+    void setCellsInPosition(unsigned long long value);
 
     void incrementCellsInPosition();
     void decrementCellsInPosition();
@@ -52,6 +52,10 @@ public:
     Cell *getRightCell();
 
     std::string getKey();
+    void recalculeKey();
+
+    unsigned long long getMoviments() const;
+    void setMoviments(unsigned long long moviments);
 
 private:
     bool copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD]);
@@ -62,8 +66,9 @@ private:
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
-    char m_cellsInPosition;
-    unsigned long long int m_tries;
+    unsigned long long int m_cellsInPosition;
+    unsigned long long int m_cellsNotInPosition;
+    unsigned long long int m_moviments;
     std::string m_key;
 };
 

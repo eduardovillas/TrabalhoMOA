@@ -23,9 +23,7 @@ private:
 
 };
 
-
 #endif // MOA_NODETREE
-
 
 template<typename NodeType>
 NodeTree<NodeType>::NodeTree(NodeType *data)

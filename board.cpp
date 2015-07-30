@@ -20,15 +20,17 @@ Board &Board::operator=(const Board &other)
 
 bool Board::operator<(const Board &other)
 {
-    return m_cellsInPosition + m_tries < other.m_cellsInPosition + other.m_tries;
+    return m_cellsNotInPosition + m_moviments < other.m_cellsNotInPosition + other.m_moviments;
 }
 
 bool Board::operator>(const Board &other)
 {
-    return m_cellsInPosition + m_tries > other.m_cellsInPosition + other.m_tries;
+    return m_cellsNotInPosition + m_moviments > other.m_cellsNotInPosition + other.m_moviments;
 }
 
-Board::~Board() {
+Board::~Board()
+{
+    m_key.clear();
 }
 
 bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
@@ -49,8 +51,8 @@ bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
             cell->setValue(value);
         }
     }
-
-    m_tries = 0;
+    recalculeKey();
+    m_moviments = 0;
     return m_emptyCell != 0;
 }
 
@@ -121,6 +123,7 @@ Cell *Board::getEmptyCell()
 
 void Board::createCells()
 {
+    m_key.clear();
     for (int row =0 ; row < SIZE_SIDE_BOARD; ++row) {
         for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
 
@@ -128,6 +131,8 @@ void Board::createCells()
             Cell::calculeExpectedValue(row, col, &expectedValue);
             Cell cell(row, col, expectedValue, this);
             m_arrayBoard[row][col] = cell;
+            m_key.append(std::to_string(cell.getValue()));
+            m_key.append(" ");
 
         }
     }
@@ -148,25 +153,38 @@ Cell *Board::getCell(int row, int col)
 {
     return &m_arrayBoard[row][col];
 }
+unsigned long long Board::getMoviments() const
+{
+    return m_moviments;
+}
+
+void Board::setMoviments(unsigned long long moviments)
+{
+    m_moviments = moviments;
+}
+
 
 char Board::getCellsInPosition() const
 {
     return m_cellsInPosition;
 }
 
-void Board::setCellsInPosition(char value)
+void Board::setCellsInPosition(unsigned long long int value)
 {
     m_cellsInPosition = value;
+    m_cellsNotInPosition = m_cellsInPosition - 16;
 }
 
 void Board::incrementCellsInPosition()
 {
     ++m_cellsInPosition;
+    --m_cellsNotInPosition;
 }
 
 void Board::decrementCellsInPosition()
 {
     --m_cellsInPosition;
+    ++m_cellsNotInPosition;
 }
 
 bool Board::winGame()
@@ -176,12 +194,12 @@ bool Board::winGame()
 
 void Board::incrementTries()
 {
-    ++m_tries;
+    ++m_moviments;
 }
 
 unsigned long long Board::getTries()
 {
-    return m_tries;
+    return m_moviments;
 }
 
 Cell *Board::getUpCell()
@@ -235,10 +253,22 @@ std::string Board::getKey()
     return m_key;
 }
 
+void Board::recalculeKey()
+{
+    m_key.clear();
+    for (int row = 0; row < SIZE_SIDE_BOARD; ++row){
+        for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
+            m_key.append(std::to_string(m_arrayBoard[row][col].getValue()));
+            m_key.append(" ");
+        }
+    }
+
+}
+
 bool Board::copyCells(const Cell arrayBoard[][SIZE_SIDE_BOARD])
 {
 
-    m_key = "";
+    m_key.clear();
     for (int row = 0; row < SIZE_SIDE_BOARD; ++row){
         for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
             m_arrayBoard[row][col] = arrayBoard[row][col];
@@ -261,8 +291,12 @@ void Board::swap(const Board &other)
 
     m_emptyCell = &m_arrayBoard[row][col];
     m_cellsInPosition = other.m_cellsInPosition;
-    m_tries = other.m_tries;
+    m_cellsNotInPosition = other.m_cellsNotInPosition;
+    m_moviments = other.m_moviments;
+    m_key.clear();
+    m_key.append(m_key);
 
 }
+
 
 

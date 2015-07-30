@@ -13,12 +13,45 @@ void test(int values[][SIZE_SIDE_BOARD]);
 void fillRandomValues(int values[][SIZE_SIDE_BOARD]);
 //void solveBoardBruteForce(Board &b);
 bool executeOp(Board &b);
-void testBoard();
+Board *testBoard();
 void testNodeTree();
 
 int main(int argc, char *argv[])
 {
-    testNodeTree();
+    //testNodeTree();
+
+
+ //   Board *b = testBoard();
+    Board * b = new Board();
+//    char values8[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
+//                                                     { 1,13,14, 6},
+//                                                     {12,11,15, 0},
+//                                                     {10, 9, 8, 7}};
+
+//    char values13[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
+//                                                     { 1,13,14, 6},
+//                                                     { 0,11,15, 7},
+//                                                     {12,10, 9, 8}};
+
+    char values30[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 4, 5, 6},
+                                                       { 0, 3,14,13},
+                                                       { 1,11, 9, 7},
+                                                       {12,15,10, 8}};
+
+    b->fillValues(values30);
+//    b->setMoviments(0);
+    NodeTree<Board> *root = new NodeTree<Board>(b);
+
+    std::cout << "inicio\n";
+    A_Star a_star(root);
+
+    if (a_star.search())
+        std::cout << "delicia " << a_star.getMovements() << "\n";
+    else
+        std::cout << "suco de laranja";
+
+    delete root;
+
 
     return 0;
 }
@@ -64,20 +97,20 @@ bool executeOp(Board &b)
     return false;
 }
 
-void testBoard()
+Board *testBoard()
 {
-    Board b;
+    Board *b = new Board();
 
     char values[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
     std::cout << "Jogo do tabuleiro de 15 peças" << "!\n";
-    if (!b.fillValues(values)) {
+    if (!b->fillValues(values)) {
         std::cout << "Erro valores inválidos" << "!\n";
-        return;
+        return 0;
     }
 
     std::cout << "\n";
-    print(b);
+    print(*b);
 
     while (true) {
         int c = getchar();
@@ -88,25 +121,25 @@ void testBoard()
             std::cout << "saindo " << "\n";
             break;
         } else if (c == 52) {
-            b.left();
+            b->left();
         } else if (c == 54) {
-            b.right();
+            b->right();
         } else if (c == 56) {
-            b.up();
+            b->up();
         } else if (c == 50) {
-            b.down();
+            b->down();
         } else {
             std::cout << "tecla invalids " << "\n";
             continue;
         }
-        if (b.winGame()) {
-            print(b);
+        if (b->winGame()) {
+            print(*b);
             std::cout << "O JOGO FOI VENCIDO " << "\n";
             break;
         }
 
         std::cout << "\n";
-        print(b);
+        print(*b);
     }
     //    using namespace std;
     //    clock_t begin = clock();
@@ -122,6 +155,7 @@ void testBoard()
 
     //    return 0;
 
+    return b;
 }
 
 void testNodeTree()
