@@ -12,7 +12,9 @@ public:
     NodeTree<NodeType> *parent();
     void setParent(NodeTree<NodeType> *parent);
 
+    const NodeType *constData() const ;
     NodeType *data();
+
     NodeTree<NodeType> **children();
     bool appendChildren(NodeTree<NodeType> *node);
 
@@ -57,6 +59,13 @@ void NodeTree<NodeType>::setParent(NodeTree<NodeType> *parent)
 {
     m_parent = parent;
 }
+
+template<typename NodeType>
+const NodeType *NodeTree<NodeType>::constData() const
+{
+    return m_data;
+}
+
 template<typename NodeType>
 NodeType *NodeTree<NodeType>::data()
 {

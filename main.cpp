@@ -20,18 +20,20 @@ int main(int argc, char *argv[])
 {
     //testNodeTree();
 
+    clock_t begin = clock();
+
 
  //   Board *b = testBoard();
     Board * b = new Board();
-//    char values8[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
-//                                                     { 1,13,14, 6},
-//                                                     {12,11,15, 0},
-//                                                     {10, 9, 8, 7}};
+    char values8[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
+                                                     { 1,13,14, 6},
+                                                     {12,11,15, 0},
+                                                     {10, 9, 8, 7}};
 
-//    char values13[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
-//                                                     { 1,13,14, 6},
-//                                                     { 0,11,15, 7},
-//                                                     {12,10, 9, 8}};
+    char values13[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 3, 4, 5},
+                                                     { 1,13,14, 6},
+                                                     { 0,11,15, 7},
+                                                     {12,10, 9, 8}};
 
     char values30[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD] = {{ 2, 4, 5, 6},
                                                        { 0, 3,14,13},
@@ -51,6 +53,11 @@ int main(int argc, char *argv[])
         std::cout << "suco de laranja";
 
     delete root;
+
+    clock_t end = std::clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+    std::cout << "resolucao em " << elapsed_secs << " segundos "" movimentos" << "\n";
 
 
     return 0;

@@ -12,8 +12,8 @@ public:
     Board(const Board & other);
 
     Board &operator=(const Board &other);
-    bool operator<(const Board &other);
-    bool operator>(const Board &other);
+    bool operator<(const Board &other) const;
+    bool operator>(const Board &other) const;
 
     virtual ~Board();
 
@@ -37,7 +37,7 @@ public:
     Cell *getEmptyCell();
 
     char getCellsInPosition() const;
-    void setCellsInPosition(unsigned long long value);
+    void setCellsInPosition(unsigned char value);
 
     void incrementCellsInPosition();
     void decrementCellsInPosition();
@@ -66,8 +66,8 @@ private:
 
     Cell m_arrayBoard[SIZE_SIDE_BOARD][SIZE_SIDE_BOARD];
     Cell *m_emptyCell;
-    unsigned long long int m_cellsInPosition;
-    unsigned long long int m_cellsNotInPosition;
+    unsigned char m_cellsInPosition;
+    unsigned char m_cellsNotInPosition;
     unsigned long long int m_moviments;
     std::string m_key;
 };

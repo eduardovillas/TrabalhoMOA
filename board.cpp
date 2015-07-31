@@ -18,12 +18,12 @@ Board &Board::operator=(const Board &other)
     return *this;
 }
 
-bool Board::operator<(const Board &other)
+bool Board::operator<(const Board &other) const
 {
     return m_cellsNotInPosition + m_moviments < other.m_cellsNotInPosition + other.m_moviments;
 }
 
-bool Board::operator>(const Board &other)
+bool Board::operator>(const Board &other) const
 {
     return m_cellsNotInPosition + m_moviments > other.m_cellsNotInPosition + other.m_moviments;
 }
@@ -36,6 +36,7 @@ Board::~Board()
 bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
 {
     m_emptyCell = 0;
+    m_key.clear();
 
     for (int row = 0; row < SIZE_SIDE_BOARD; ++row) {
         for (int col = 0; col < SIZE_SIDE_BOARD; ++col) {
@@ -48,10 +49,13 @@ bool Board::fillValues(char values[][SIZE_SIDE_BOARD])
                 m_emptyCell = cell;
             }
 
+            m_key.append(std::to_string(value));
+            m_key.append(" ");
+
             cell->setValue(value);
         }
     }
-    recalculeKey();
+
     m_moviments = 0;
     return m_emptyCell != 0;
 }
@@ -169,7 +173,7 @@ char Board::getCellsInPosition() const
     return m_cellsInPosition;
 }
 
-void Board::setCellsInPosition(unsigned long long int value)
+void Board::setCellsInPosition(unsigned char value)
 {
     m_cellsInPosition = value;
     m_cellsNotInPosition = m_cellsInPosition - 16;

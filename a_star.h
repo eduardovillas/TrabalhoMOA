@@ -6,7 +6,21 @@
 #include "nodetree.h"
 #include <unordered_map>
 #include <stack>
+#include <queue>
 
+namespace std {
+template <>
+struct greater<NodeTree<Board> * > {
+bool operator()(const NodeTree<Board> * leftNodeBoard, const NodeTree<Board> * rightNodeBoard) const
+{
+    const Board *leftBoard = leftNodeBoard->constData();
+    const Board *rightBoard = rightNodeBoard->constData();
+
+    return *leftBoard > *rightBoard;
+}
+};
+
+}
 class A_Star
 {
 public:
@@ -27,7 +41,8 @@ private:
     std::unordered_map<std::string, NodeTree<Board> * > m_closedStates;
     NodeTree<Board> *m_initialState;
     NodeTree<Board> *m_finalState;
-    NodeTree<Board> *children[SIZE_SIDE_BOARD];
+    NodeTree<Board> *m_children[SIZE_SIDE_BOARD];
+    std::priority_queue< NodeTree<Board> *, std::vector<NodeTree<Board> * >, std::greater< NodeTree<Board> * > > m_priorityQueue;
     int m_movements;
 
 };
