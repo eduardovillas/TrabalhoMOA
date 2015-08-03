@@ -17,7 +17,6 @@ void debugChildreen(NodeTree<Board > *children[SIZE_SIDE_BOARD])
 bool A_Star::search()
 {
 
-    long long int len = 0;
     while (!m_opendedStates.empty()) {
 
         NodeTree<Board> *smallerNode = getSmallerNodeInOpened();
@@ -25,34 +24,24 @@ bool A_Star::search()
         Board *b = smallerNode->data();
         m_opendedStates.erase(b->getKey());
         m_closedStates[b->getKey()] = smallerNode;
-        ++len;
+
         if (b->winGame()) {
             m_movements = b->getTries();
-            std::cout << "\n tamanho da arvore " << len << "\n";
             return true;
         }
 
-        generateSuccessors(smallerNode);
+        NodeTree<Board> *children[SIZE_SIDE_BOARD];
 
-        if (!appendIfNecessary(0))
-            delete m_children[0];
-        else
-            smallerNode->appendChildren(m_children[0]);
+        generateSuccessors(smallerNode, children);
 
-        if (!appendIfNecessary(1))
-            delete m_children[1];
-        else
-            smallerNode->appendChildren(m_children[1]);
+        for (int i = 0; i < SIZE_SIDE_BOARD; ++i) {
+            if (!appendIfNecessary(children[i])) {
+                delete children[i];
+            } else {
+                smallerNode->appendChildren(children[i]);
+            }
 
-        if (!appendIfNecessary(2))
-            delete m_children[2];
-        else
-            smallerNode->appendChildren(m_children[2]);
-
-        if (!appendIfNecessary(3))
-            delete m_children[3];
-        else
-            smallerNode->appendChildren(m_children[3]);
+        }
 
     }
 
@@ -67,14 +56,14 @@ NodeTree<Board> *A_Star::getSmallerNodeInOpened()
     return smaller;
 }
 
-void A_Star::generateSuccessors(NodeTree<Board> *node)
+void A_Star::generateSuccessors(NodeTree<Board> *node, NodeTree<Board> *children[SIZE_SIDE_BOARD])
 {
 
-    enum BoardDirections directionToParent = NONE;//getDirectionToParent(node);
-    m_children[0] = 0;
-    m_children[1] = 0;
-    m_children[2] = 0;
-    m_children[3] = 0;
+    enum BoardDirections directionToParent = getDirectionToParent(node);
+    children[0] = 0;
+    children[1] = 0;
+    children[2] = 0;
+    children[3] = 0;
 
     Board *currentBoard = node->data();
 
@@ -83,7 +72,7 @@ void A_Star::generateSuccessors(NodeTree<Board> *node)
         Board *upBoard = new Board(*currentBoard);
         upChildren = new NodeTree<Board>(upBoard);
         upBoard->up();
-        m_children[0] = upChildren;
+        children[0] = upChildren;
     }
 
     if (directionToParent != DOWN && currentBoard->canDown()) {
@@ -91,7 +80,7 @@ void A_Star::generateSuccessors(NodeTree<Board> *node)
         Board *downBoard = new Board(*currentBoard);
         downChildren = new NodeTree<Board>(downBoard);
         downBoard->down();
-        m_children[1] = downChildren;
+        children[1] = downChildren;
     }
 
     if (directionToParent != LEFT && currentBoard->canleft()) {
@@ -99,7 +88,7 @@ void A_Star::generateSuccessors(NodeTree<Board> *node)
         Board *leftBoard = new Board(*currentBoard);
         leftChildren = new NodeTree<Board>(leftBoard);
         leftBoard->left();
-        m_children[2] = leftChildren;
+        children[2] = leftChildren;
     }
 
     if (directionToParent != RIGHT && currentBoard->canright()) {
@@ -107,7 +96,7 @@ void A_Star::generateSuccessors(NodeTree<Board> *node)
         Board *rightBoard = new Board(*currentBoard);
         rightChildren = new NodeTree<Board>(rightBoard);
         rightBoard->right();
-        m_children[3] = rightChildren;
+        children[3] = rightChildren;
     }
 
 }
@@ -126,7 +115,7 @@ BoardDirections A_Star::getDirectionToParent(NodeTree<Board> *node)
         char parentRow = emptyCellParent->getRow();
 
         char currentCol = emptyCellCurrent->getCol();
-        char parentCol = emptyCellCurrent->getCol();
+        char parentCol = emptyCellParent->getCol();
 
         if (currentRow == parentRow) {
             if (currentCol < parentCol)
@@ -134,7 +123,7 @@ BoardDirections A_Star::getDirectionToParent(NodeTree<Board> *node)
             else
                 directionToParent = LEFT;
         } else if (currentCol == parentCol) {
-            if (currentRow < parentCol)
+            if (currentRow < parentRow)
                 directionToParent = DOWN;
             else
                 directionToParent = UP;
@@ -145,9 +134,8 @@ BoardDirections A_Star::getDirectionToParent(NodeTree<Board> *node)
     return directionToParent;
 }
 
-bool A_Star::appendIfNecessary(int i)
+bool A_Star::appendIfNecessary(NodeTree<Board> *child)
 {
-    NodeTree<Board> *child = m_children[i];
 
     if (child == 0) {
         return false;
@@ -158,13 +146,32 @@ bool A_Star::appendIfNecessary(int i)
     std::unordered_map<std::string, NodeTree<Board> * >::const_iterator itOpeneds = m_opendedStates.find(board->getKey());
     std::unordered_map<std::string, NodeTree<Board> * >::const_iterator itCloseds = m_closedStates.find(board->getKey());
 
-    if (itCloseds != m_closedStates.end() || itOpeneds != m_opendedStates.end())
-        return false;
+    if ((itCloseds == m_closedStates.end() && itOpeneds == m_opendedStates.end()) ||
+            (itCloseds != m_closedStates.end() || itOpeneds != m_opendedStates.end())) {
 
-    m_opendedStates[board->getKey()] = child;
-    m_priorityQueue.push(child);
+        NodeTree<Board> *n;
+        Board *b = 0;
 
-    return true;
+        if (itCloseds != m_closedStates.end()) {
+            n = itCloseds->second;
+            b = n->data();
+        } else if (itOpeneds != m_opendedStates.end()) {
+            n = itOpeneds->second;
+            b = n->data();
+        }
+
+        if (!b || board->getTries() < b->getTries()) {
+
+            m_closedStates.erase(board->getKey());
+            m_opendedStates[board->getKey()] = child;
+            m_priorityQueue.push(child);
+
+            return true;
+        }
+
+    }
+
+    return false;
 }
 int A_Star::getMovements() const
 {
